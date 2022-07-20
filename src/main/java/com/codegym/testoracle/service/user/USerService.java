@@ -3,6 +3,7 @@ package com.codegym.testoracle.service.user;
 import com.codegym.testoracle.model.dto.UserPrincipal;
 import com.codegym.testoracle.model.entity.Role;
 import com.codegym.testoracle.model.entity.User;
+import com.codegym.testoracle.repository.IRoleRepository;
 import com.codegym.testoracle.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,9 @@ public class USerService implements IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IRoleRepository roleRepository;
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -45,7 +49,8 @@ public class USerService implements IUserService {
         String encodePassword = passwordEncoder.encode(password);//Mã hóa pass của người dùng
         user.setPassword(encodePassword);
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role(2L, "ROLE_USER"));
+        Role role = roleRepository.findByName("ROLE_USER");
+        roles.add(new Role( role.getId(), role.getName()));
         user.setRoles(roles);
         return userRepository.save(user);
     }
@@ -61,7 +66,8 @@ public class USerService implements IUserService {
         String encodePassword = passwordEncoder.encode(password);//Mã hóa pass của người dùng
         user.setPassword(encodePassword);
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role(3L, "ROLE_SHOP"));
+        Role role = roleRepository.findByName("ROLE_SHOP");
+        roles.add(new Role( role.getId(), role.getName()));
         user.setRoles(roles);
         return userRepository.save(user);
     }
@@ -72,7 +78,8 @@ public class USerService implements IUserService {
         String encodePassword = passwordEncoder.encode(password);//Mã hóa pass của người dùng
         user.setPassword(encodePassword);
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role(1L, "ROLE_ADMIN"));
+        Role role = roleRepository.findByName("ROLE_ADMIN");
+        roles.add(new Role( role.getId(), role.getName()));
         user.setRoles(roles);
         return userRepository.save(user);
     }

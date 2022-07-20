@@ -13,7 +13,9 @@ import javax.persistence.*;
 @Data
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(generator="some_seq_gen_category")
+    @SequenceGenerator(name="some_seq_gen_category", sequenceName="SOME_SEQ_CATEGORY", allocationSize=1)
     private Long id;
 
     private String name;
